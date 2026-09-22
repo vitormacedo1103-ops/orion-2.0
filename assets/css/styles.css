@@ -214,9 +214,10 @@ p{color:#CBD5E1; max-width:70ch}
 /* Objection */
 #objecao h2{font-size:clamp(1.6rem,4vw,2.6rem)}
 .big-answer{font-family:var(--font-display); font-size:clamp(1.3rem,3vw,1.8rem); font-weight:700; color:var(--cyan)}
-.obj-flow{display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin-top:1.8rem; font-family:var(--font-display); font-weight:700; font-size:.82rem}
-.obj-flow span{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); padding:.55rem .9rem; border-radius:99px}
-.obj-flow .active{background:var(--gradient); border-color:transparent}
+.obj-flow{display:flex; flex-direction:column; align-items:stretch; gap:.15rem; margin-top:1.8rem; font-family:var(--font-display); font-weight:700; font-size:.82rem; max-width:26rem; margin-left:auto; margin-right:auto}
+.obj-flow span{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); padding:.8rem 1rem; border-radius:14px; text-align:center; overflow-wrap:anywhere}
+.obj-flow span[aria-hidden]{background:none; border:0; color:var(--cyan); font-size:1.05rem; line-height:1; padding:.15rem; transform:rotate(90deg)}
+.obj-flow .active{background:var(--gradient); border-color:transparent; box-shadow:0 8px 28px rgba(46,107,255,.4)}
 
 /* Who / versus */
 .who-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.9rem}
@@ -275,6 +276,9 @@ p{color:#CBD5E1; max-width:70ch}
   .flow-step{flex:1 1 170px; min-width:0}
   .flow-arrow{flex:0 0 auto; align-self:center}
   .flow-arrow{transform:rotate(-90deg)}
+  .obj-flow{flex-direction:row; flex-wrap:wrap; align-items:center; justify-content:center; max-width:none; gap:.6rem}
+  .obj-flow span{border-radius:99px; padding:.6rem 1rem}
+  .obj-flow span[aria-hidden]{transform:none; padding:0 .1rem}
   .cards-4{grid-template-columns:repeat(4,1fr)}
   .pillars{grid-template-columns:repeat(3,1fr)}
   .grid-6{grid-template-columns:repeat(3,1fr)}
