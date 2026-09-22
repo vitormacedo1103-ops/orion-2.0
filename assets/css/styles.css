@@ -69,7 +69,7 @@ p{color:#CBD5E1; max-width:70ch}
 .logo{display:flex; align-items:center; gap:.6rem; text-decoration:none; color:#fff; min-height:48px}
 .logo-img{height:44px; width:auto; max-width:200px; object-fit:contain; display:block; background:transparent; filter:none}
 .footer-logo{height:42px}
-.footer-logo-full{height:96px; width:auto; max-width:140px; object-fit:contain; border-radius:12px; display:block}
+.footer-logo-full{height:120px; width:auto; max-width:175px; object-fit:contain; border-radius:12px; display:block}
 .logo-fallback{font-family:var(--font-display); font-weight:800; letter-spacing:.14em; font-size:1.1rem; background:linear-gradient(90deg,#fff,#22D3EE); -webkit-background-clip:text; background-clip:text; color:transparent}
 .logo-mark{width:30px; height:30px; border-radius:9px; background:#050816; border:1px solid rgba(255,255,255,.15); display:grid; place-items:center; position:relative; overflow:hidden}
 .logo-mark::before{content:""; position:absolute; inset:-40%; background:conic-gradient(from 0deg,#2E6BFF,#22D3EE,#8B5CF6,#2E6BFF); filter:blur(8px); opacity:.7}
