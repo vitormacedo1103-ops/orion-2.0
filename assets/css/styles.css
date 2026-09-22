@@ -248,6 +248,9 @@ p{color:#CBD5E1; max-width:70ch}
 /* Footer */
 .footer{border-top:1px solid rgba(255,255,255,.08); padding:2.5rem 0 6rem; background:var(--bg-0)}
 .footer-grid{display:grid; gap:1.6rem}
+.footer-brand{display:flex; flex-direction:column; align-items:center; text-align:center}
+.footer-logo-full{margin:0 auto}
+.footer-tag{text-align:center}
 .footer-tag{color:var(--muted); margin:.3rem 0 0}
 .footer nav{display:grid; gap:.6rem}
 .footer nav a{color:#CBD5E1; text-decoration:none; font-size:.92rem}
