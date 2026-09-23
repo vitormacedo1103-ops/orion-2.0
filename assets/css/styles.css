@@ -326,6 +326,7 @@ p{color:#CBD5E1; max-width:70ch}
   .footer-grid{grid-template-columns:1.2fr 1fr auto}
   .footer nav{grid-template-columns:repeat(2,auto); justify-content:start; gap:.6rem 2rem}
   .nav-cta{display:none}
+  .header-cta{display:none}
   .payment-card{display:flex; height:202.5px; min-height:202.5px; aspect-ratio:auto; position:relative; z-index:3; opacity:1; visibility:visible}
 }
 @media(max-width:759px){
