@@ -166,6 +166,18 @@ const CHECKOUT_URL = "#";
     }
   }
 
+  // Logo animada do rodapé — só toca visível e com movimento permitido
+  const logoVideo = document.querySelector('.logo-effect-video');
+  if (logoVideo) {
+    const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const playLogo = () => { if (motionOK) { const p = logoVideo.play(); if (p) p.catch(() => {}); } };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) playLogo(); else logoVideo.pause(); }), { threshold: 0.2 }).observe(logoVideo);
+    } else {
+      playLogo();
+    }
+  }
+
   // Parallax sutil no hero (desktop apenas)
   const hero = document.querySelector('.hero-visual');
   if (hero && !reduced && window.matchMedia('(pointer: fine)').matches) {
