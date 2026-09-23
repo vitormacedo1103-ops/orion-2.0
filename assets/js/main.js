@@ -166,13 +166,35 @@ const CHECKOUT_URL = "#";
     }
   }
 
-  // Logo animada do rodapé — só toca visível e com movimento permitido
+  // Logo animada do rodapé — carrega sob demanda, toca 1 vez visível
   const logoVideo = document.querySelector('.logo-effect-video');
   if (logoVideo) {
     const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const playLogo = () => { if (motionOK) { const p = logoVideo.play(); if (p) p.catch(() => {}); } };
+    let logoLoaded = false;
+    const loadLogo = () => {
+      if (logoLoaded || !motionOK || !logoVideo.dataset.webm) return;
+      logoLoaded = true;
+      const webm = document.createElement('source');
+      webm.src = logoVideo.dataset.webm;
+      webm.type = 'video/webm';
+      const mp4 = document.createElement('source');
+      mp4.src = logoVideo.dataset.mp4;
+      mp4.type = 'video/mp4';
+      logoVideo.append(webm, mp4);
+      logoVideo.load();
+    };
+    const playLogo = () => {
+      loadLogo();
+      if (!motionOK) return;
+      const p = logoVideo.play();
+      if (p) p.catch(() => {});
+    };
+    logoVideo.addEventListener('ended', () => logoVideo.pause());
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) playLogo(); else logoVideo.pause(); }), { threshold: 0.2 }).observe(logoVideo);
+      const logoIO = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting) { playLogo(); logoIO.unobserve(logoVideo); }
+      }), { rootMargin: '600px 0px', threshold: 0 });
+      logoIO.observe(logoVideo);
     } else {
       playLogo();
     }
