@@ -134,10 +134,6 @@ const CHECKOUT_URL = "#";
     portfolioScrollFrame = requestAnimationFrame(portfolioUpdate);
   };
   if (portfolioViewport && portfolioTrack) {
-    let portfolioTimer = null;
-    let portfolioResume = null;
-    let portfolioPaused = false;
-    let portfolioVisible = false;
     const portfolioGap = () => {
       const styles = getComputedStyle(portfolioTrack);
       return parseFloat(styles.columnGap || styles.gap || '20');
@@ -157,48 +153,16 @@ const CHECKOUT_URL = "#";
         portfolioViewport.scrollBy({ left: direction * portfolioStep(), behavior: reduced ? 'auto' : 'smooth' });
       }
     };
-    const portfolioStop = () => {
-      if (portfolioTimer) clearInterval(portfolioTimer);
-      portfolioTimer = null;
-    };
-    const portfolioStart = () => {
-      portfolioStop();
-      if (reduced || !portfolioVisible || portfolioTrack.scrollWidth <= portfolioViewport.clientWidth + 4) return;
-      portfolioTimer = setInterval(() => {
-        if (!document.hidden && !portfolioPaused) portfolioGo(1);
-      }, 3000);
-    };
-    if (portfolioPrev) portfolioPrev.addEventListener('click', () => { portfolioGo(-1); portfolioRequestUpdate(); portfolioStart(); });
-    if (portfolioNext) portfolioNext.addEventListener('click', () => { portfolioGo(1); portfolioRequestUpdate(); portfolioStart(); });
-    portfolioViewport.addEventListener('pointerenter', () => { portfolioPaused = true; portfolioStop(); });
-    portfolioViewport.addEventListener('pointerleave', () => { portfolioPaused = false; portfolioStart(); });
-    portfolioViewport.addEventListener('focusin', () => { portfolioPaused = true; portfolioStop(); });
-    portfolioViewport.addEventListener('focusout', () => { portfolioPaused = false; portfolioStart(); });
-    portfolioViewport.addEventListener('touchstart', () => {
-      portfolioPaused = true;
-      portfolioStop();
-      if (portfolioResume) clearTimeout(portfolioResume);
-    }, { passive: true });
-    portfolioViewport.addEventListener('touchend', () => {
-      if (portfolioResume) clearTimeout(portfolioResume);
-      portfolioResume = setTimeout(() => { portfolioPaused = false; portfolioStart(); }, 8000);
-    });
+    if (portfolioPrev) portfolioPrev.addEventListener('click', () => { portfolioGo(-1); portfolioRequestUpdate(); });
+    if (portfolioNext) portfolioNext.addEventListener('click', () => { portfolioGo(1); portfolioRequestUpdate(); });
     portfolioViewport.addEventListener('scroll', portfolioRequestUpdate, { passive: true });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) portfolioStop(); else portfolioStart(); });
-    window.addEventListener('resize', () => { portfolioRequestUpdate(); portfolioStart(); });
+    window.addEventListener('resize', portfolioRequestUpdate);
     if ('IntersectionObserver' in window) {
-      const portfolioObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          portfolioVisible = entry.isIntersecting;
-          portfolioStart();
-        });
-      }, { threshold: 0.2 });
+      const portfolioObserver = new IntersectionObserver(() => portfolioRequestUpdate(), { threshold: 0.2 });
       portfolioObserver.observe(portfolioViewport);
       portfolioRequestUpdate();
     } else {
-      portfolioVisible = true;
       portfolioRequestUpdate();
-      portfolioStart();
     }
   }
 

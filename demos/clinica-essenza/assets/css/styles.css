@@ -43,7 +43,10 @@ p{color:#3A4A43}
 .menu a:not(.btn):hover{color:var(--green)}
 .hero{padding:3.5rem 0 4rem; overflow:hidden; background:radial-gradient(600px 400px at 80% 10%, rgba(201,169,106,.18), transparent), var(--bg)}
 .hero-grid{display:grid; gap:2.5rem; align-items:center}
-.actions{display:flex; flex-wrap:wrap; gap:.9rem; margin:1.5rem 0 .8rem}
+.actions{display:flex; flex-wrap:wrap; gap:.9rem; margin:2rem 0 0}
+.center .btn, .diff .btn, .exp-copy .btn, .final .btn{margin-top:1.6rem}
+#especialidades .center, #diferenciais .reveal .btn{margin-top:2.2rem}
+.final .btn{margin-top:1.8rem}
 .hero-art{position:relative; min-height:420px}
 .arch{position:absolute; inset:0 10% 0 10%; border-radius:200px 200px 24px 24px; background:#E9EFE9; border:1px solid var(--line); overflow:hidden}
 .arch-img{width:100%; height:100%; object-fit:cover; display:block}
