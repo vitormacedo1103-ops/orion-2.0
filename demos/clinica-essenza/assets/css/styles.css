@@ -70,7 +70,7 @@ p{color:#3A4A43}
 .diff{background:#fff; border:1px solid var(--line); border-radius:16px; padding:1.3rem 1.4rem}
 .diff h3{margin:0 0 .3rem; font-size:1.35rem}
 .diff p{margin:0; color:var(--muted); font-size:.93rem}
-.experience{padding:1rem 1.25rem 4rem}
+.experience{padding:4.5rem 0}
 .exp-box{display:grid; overflow:hidden; border-radius:28px; background:linear-gradient(135deg,#1B4332,#2D6A4F 60%,#40916C); color:#fff}
 .exp-copy{padding:2.5rem 2rem}
 .exp-copy h2{color:#fff}
@@ -88,11 +88,11 @@ p{color:#3A4A43}
 .faq-a{max-height:0; overflow:hidden; transition:.3s}
 .faq-a p{padding:0 1.2rem 1.1rem; margin:0; color:var(--muted)}
 .final{padding:5rem 0; text-align:center; background:linear-gradient(180deg,var(--bg),#fff)}
-.footer{background:#fff; border-top:1px solid var(--line); padding:2.5rem 0 5rem}
-.foot-grid{display:grid; gap:1.4rem}
+.footer{background:#fff; border-top:1px solid var(--line); padding:2.5rem 0 2.5rem}
+.foot-grid{display:grid; gap:1.8rem; align-items:start}
 .muted{color:var(--muted)}
 .footer a{color:var(--green)}
-.foot-base{margin-top:1.6rem; padding-top:1.2rem; border-top:1px solid var(--line); color:var(--muted)}
+.foot-base{margin-top:1.8rem; padding-top:1.2rem; border-top:1px solid var(--line); color:var(--muted); line-height:1.6}
 .float-wa{position:fixed; right:1rem; bottom:1rem; width:56px; height:56px; display:grid; place-items:center; border-radius:50%; background:#25D366; color:#063; box-shadow:0 10px 30px rgba(0,0,0,.2)}
 .reveal{opacity:0; transform:translateY(20px); transition:.6s}
 .reveal.visible{opacity:1; transform:none}
@@ -106,7 +106,7 @@ p{color:#3A4A43}
   .diff-grid{grid-template-columns:1fr 1fr}
   .exp-box{grid-template-columns:1fr 1fr; align-items:stretch}
   .steps{grid-template-columns:repeat(3,1fr)}
-  .foot-grid{grid-template-columns:1.2fr 1fr auto}
+  .foot-grid{grid-template-columns:1.2fr .9fr}
   .menu-cta{display:none}
 }
 @media(max-width:799px){
