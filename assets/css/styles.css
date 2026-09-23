@@ -1,24 +1,4 @@
 /* Orionnex — Design System (tokens CSS-first, Tailwind v4 style) */
-/* Shimmer nos títulos (efeito portado do componente ShimmerText): varredura de
-   brilho sobre a cor original do texto. Tamanhos NÃO alterados — só o efeito.
-   Pausa entre varreduras via keyframes (45% varre, resto segura). */
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-  main h1, main h2{
-    background:currentColor linear-gradient(to right,currentColor 0%,rgba(255,255,255,.6) 40%,rgba(255,255,255,.6) 60%,currentColor 100%) no-repeat;
-    -webkit-background-clip:text; background-clip:text;
-    -webkit-text-fill-color:transparent; color:transparent;
-    background-size:50% 200%;
-    animation:shimmer-sweep 3s linear 1.5s infinite;
-  }
-}
-@keyframes shimmer-sweep{
-  0%{background-position:250% 0}
-  50%{background-position:-100% 0}
-  100%{background-position:-100% 0}
-}
-@media (prefers-reduced-motion:reduce){
-  main h1, main h2{animation:none; background:none; -webkit-text-fill-color:currentColor; color:inherit}
-}
 :root{
   --bg-0:#030511;
   --bg-1:#050816;
