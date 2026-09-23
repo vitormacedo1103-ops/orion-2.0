@@ -74,13 +74,6 @@ p{color:#CBD5E1; max-width:70ch}
 .logo-img{height:44px; width:auto; max-width:200px; object-fit:contain; display:block; background:transparent; filter:none}
 .footer-logo{height:42px}
 .footer-logo-full{height:120px; width:auto; max-width:175px; object-fit:contain; border-radius:12px; display:block}
-.logo-effect{position:relative; width:min(100%,320px); aspect-ratio:16/9; border-radius:18px; overflow:hidden; border:1px solid rgba(34,211,238,.3); box-shadow:0 0 44px rgba(46,107,255,.35),0 0 90px rgba(139,92,246,.18),inset 0 0 0 1px rgba(255,255,255,.06)}
-.logo-effect-video{width:100%; height:100%; object-fit:cover; display:block; mix-blend-mode:screen; filter:saturate(1.15); -webkit-mask-image:radial-gradient(ellipse 92% 92% at 50% 50%,#000 58%,transparent 99%); mask-image:radial-gradient(ellipse 92% 92% at 50% 50%,#000 58%,transparent 99%); animation:logo-breathe 9s ease-in-out infinite alternate}
-.logo-effect-glow{position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,transparent 55%,rgba(3,5,17,.55)); mix-blend-mode:multiply}
-@keyframes logo-breathe{from{transform:scale(1)}to{transform:scale(1.07)}}
-@media (prefers-reduced-motion:reduce){
-  .logo-effect-video{animation:none}
-}
 .logo-fallback{font-family:var(--font-display); font-weight:800; letter-spacing:.14em; font-size:1.1rem; background:linear-gradient(90deg,#fff,#22D3EE); -webkit-background-clip:text; background-clip:text; color:transparent}
 .logo-mark{width:30px; height:30px; border-radius:9px; background:#050816; border:1px solid rgba(255,255,255,.15); display:grid; place-items:center; position:relative; overflow:hidden}
 .logo-mark::before{content:""; position:absolute; inset:-40%; background:conic-gradient(from 0deg,#2E6BFF,#22D3EE,#8B5CF6,#2E6BFF); filter:blur(8px); opacity:.7}

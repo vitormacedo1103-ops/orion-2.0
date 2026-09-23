@@ -166,54 +166,6 @@ const CHECKOUT_URL = "#";
     }
   }
 
-  // Logo animada do rodapé — carrega sob demanda, toca 1 vez visível
-  const logoVideo = document.querySelector('.logo-effect-video');
-  if (logoVideo) {
-    const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let logoLoaded = false;
-    let logoPlayed = false;
-    logoVideo.muted = true;
-    logoVideo.defaultMuted = true;
-    const loadLogo = () => {
-      if (logoLoaded || !motionOK || !logoVideo.dataset.webm) return;
-      logoLoaded = true;
-      const webm = document.createElement('source');
-      webm.src = logoVideo.dataset.webm;
-      webm.type = 'video/webm';
-      const mp4 = document.createElement('source');
-      mp4.src = logoVideo.dataset.mp4;
-      mp4.type = 'video/mp4';
-      logoVideo.append(webm, mp4);
-      logoVideo.load();
-    };
-    const playLogo = () => {
-      if (!motionOK || logoPlayed) return;
-      loadLogo();
-      const tryPlay = () => {
-        const p = logoVideo.play();
-        if (p) {
-          p.then(() => { logoPlayed = true; }).catch(() => { logoPlayed = false; });
-        } else {
-          logoPlayed = true;
-        }
-      };
-      if (logoVideo.readyState >= 2) {
-        tryPlay();
-      } else {
-        logoVideo.addEventListener('canplay', tryPlay, { once: true });
-      }
-    };
-    logoVideo.addEventListener('ended', () => logoVideo.pause());
-    if ('IntersectionObserver' in window) {
-      const logoIO = new IntersectionObserver((es) => es.forEach((e) => {
-        if (e.isIntersecting) { playLogo(); logoIO.unobserve(logoVideo); }
-      }), { rootMargin: '600px 0px', threshold: 0 });
-      logoIO.observe(logoVideo);
-    } else {
-      playLogo();
-    }
-  }
-
   // Parallax sutil no hero (desktop apenas)
   const hero = document.querySelector('.hero-visual');
   if (hero && !reduced && window.matchMedia('(pointer: fine)').matches) {
