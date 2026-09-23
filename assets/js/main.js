@@ -171,6 +171,9 @@ const CHECKOUT_URL = "#";
   if (logoVideo) {
     const motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let logoLoaded = false;
+    let logoPlayed = false;
+    logoVideo.muted = true;
+    logoVideo.defaultMuted = true;
     const loadLogo = () => {
       if (logoLoaded || !motionOK || !logoVideo.dataset.webm) return;
       logoLoaded = true;
@@ -184,10 +187,21 @@ const CHECKOUT_URL = "#";
       logoVideo.load();
     };
     const playLogo = () => {
+      if (!motionOK || logoPlayed) return;
       loadLogo();
-      if (!motionOK) return;
-      const p = logoVideo.play();
-      if (p) p.catch(() => {});
+      const tryPlay = () => {
+        const p = logoVideo.play();
+        if (p) {
+          p.then(() => { logoPlayed = true; }).catch(() => { logoPlayed = false; });
+        } else {
+          logoPlayed = true;
+        }
+      };
+      if (logoVideo.readyState >= 2) {
+        tryPlay();
+      } else {
+        logoVideo.addEventListener('canplay', tryPlay, { once: true });
+      }
     };
     logoVideo.addEventListener('ended', () => logoVideo.pause());
     if ('IntersectionObserver' in window) {
