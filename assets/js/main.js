@@ -8,6 +8,38 @@ const CHECKOUT_URL = "#";
   try {
     document.querySelectorAll('a[data-checkout="amplo-pay"]').forEach((a) => { a.href = CHECKOUT_URL; });
   } catch (err) { /* sem checkout: mantém placeholder */ }
+
+  const cards = document.querySelectorAll('[data-tilt-card]');
+  cards.forEach((card) => {
+    const tiltLimit = 10;
+    const scale = 1.05;
+    const perspective = 1200;
+    const dir = -1;
+    const spotlight = card.querySelector('.payment-spotlight');
+    let frame = null;
+    card.addEventListener('pointerenter', () => card.classList.add('is-hovered'));
+    card.addEventListener('pointermove', (event) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        const rect = card.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        const xRot = (py - 0.5) * (tiltLimit * 2) * dir;
+        const yRot = (px - 0.5) * -(tiltLimit * 2) * dir;
+        card.style.transform = `perspective(${perspective}px) rotateX(${xRot}deg) rotateY(${yRot}deg) scale3d(${scale}, ${scale}, ${scale})`;
+        if (spotlight) {
+          spotlight.style.left = `${px * 100}%`;
+          spotlight.style.top = `${py * 100}%`;
+        }
+        frame = null;
+      });
+    });
+    card.addEventListener('pointerleave', () => {
+      card.classList.remove('is-hovered');
+      card.style.transform = `perspective(${perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    });
+  });
+
   // Menu mobile — acessível
   const toggle = document.querySelector('.nav-toggle');
   const menu = document.getElementById('menu');

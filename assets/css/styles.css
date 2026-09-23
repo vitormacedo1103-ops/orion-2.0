@@ -210,6 +210,19 @@ p{color:#CBD5E1; max-width:70ch}
 .price{font-family:var(--font-display); font-size:clamp(3rem,9vw,4.6rem); font-weight:800; margin:.6rem 0 0; letter-spacing:-.03em}
 .price small{font-size:1.2rem; vertical-align:super; color:var(--cyan)}
 .price-sub{font-weight:600; color:#fff; margin:.2rem 0 1.6rem}
+.payment-card{width:min(100%,360px); aspect-ratio:16/9; margin:0 auto 1.6rem; padding:1.5rem; border-radius:1.25rem; background:linear-gradient(135deg,#202020,#090909); border:1px solid rgba(255,255,255,.15); color:#fff; display:flex; flex-direction:column; justify-content:space-between; text-align:left; transform-style:preserve-3d; will-change:transform; box-shadow:0 8px 16px rgba(0,0,0,.3),0 16px 32px rgba(0,0,0,.2),0 24px 48px rgba(0,0,0,.1),inset 0 0 0 1px rgba(255,255,255,.06); position:relative; overflow:hidden}
+.payment-card-top,.payment-card-bottom{display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; position:relative; z-index:2}
+.payment-card-top img{width:100px; height:34px; object-fit:contain; object-position:left center; max-width:none}
+.payment-methods{font-family:var(--font-display); font-size:.66rem; font-weight:800; letter-spacing:.12em; color:#fff}
+.payment-card-bottom{align-items:flex-end}
+.payment-card-bottom span{display:block; color:#aaa; font-size:.7rem; margin-bottom:.3rem}
+.payment-card-bottom strong{font-family:var(--font-display); font-size:1rem; letter-spacing:.1em}
+.payment-card-chip{width:40px; height:30px; border-radius:7px; background:linear-gradient(135deg,#c5c5c5,#727272); position:relative; opacity:.9; transform:translateZ(20px)}
+.payment-card-chip::before,.payment-card-chip::after{content:""; position:absolute; background:rgba(0,0,0,.35)}
+.payment-card-chip::before{width:1px; height:100%; left:50%}
+.payment-card-chip::after{width:100%; height:1px; top:50%}
+.payment-spotlight{position:absolute; z-index:1; width:200%; aspect-ratio:1; border-radius:50%; left:50%; top:50%; transform:translate(-50%,-50%); background:radial-gradient(circle,rgba(255,255,255,.15) 0%,transparent 40%); opacity:0; transition:opacity .3s; pointer-events:none}
+.tilt-card.is-hovered .payment-spotlight{opacity:.5}
 .invest-list{list-style:none; padding:0; margin:0 auto 1.6rem; display:grid; gap:.6rem; max-width:26rem; text-align:left}
 .invest-list li{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); padding:.7rem 1rem; border-radius:.8rem; font-size:.94rem}
 .invest-note{font-size:.85rem; color:var(--muted); max-width:38rem; margin:0 auto 1.6rem}
@@ -303,6 +316,8 @@ p{color:#CBD5E1; max-width:70ch}
 }
 @media(max-width:759px){
   .header-cta{display:none}
+  .payment-card{transform:none!important; max-width:320px; padding:1.25rem}
+  .payment-card-top img{width:90px; height:30px}
   .nav-toggle{display:flex}
   .nav-menu{position:fixed; top:50vh; top:50dvh; left:50vw; transform:translate(-50%,-50%) scale(.95); width:min(86vw,380px); max-height:75vh; max-height:75dvh; overflow-y:auto; -webkit-overflow-scrolling:touch; background:rgba(10,15,36,.98); border:1px solid rgba(34,211,238,.25); border-radius:20px; padding:1.4rem 1.4rem max(1.6rem,env(safe-area-inset-bottom)); display:none; flex-direction:column; align-items:stretch; gap:.2rem; box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 100vmax rgba(2,4,12,.72); z-index:60; opacity:0; transition:opacity .25s ease,transform .25s ease}
   .nav-menu.open{display:flex; opacity:1; transform:translate(-50%,-50%) scale(1)}
