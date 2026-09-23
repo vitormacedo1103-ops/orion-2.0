@@ -112,6 +112,76 @@ const CHECKOUT_URL = "#";
     bar.style.width = '100%';
   }
 
+  const portfolioViewport = document.querySelector('.portfolio-viewport');
+  const portfolioTrack = document.getElementById('portfolioTrack');
+  const portfolioPrev = document.querySelector('.portfolio-prev');
+  const portfolioNext = document.querySelector('.portfolio-next');
+  if (portfolioViewport && portfolioTrack) {
+    let portfolioTimer = null;
+    let portfolioResume = null;
+    let portfolioPaused = false;
+    let portfolioVisible = false;
+    const portfolioGap = () => {
+      const styles = getComputedStyle(portfolioTrack);
+      return parseFloat(styles.columnGap || styles.gap || '20');
+    };
+    const portfolioStep = () => {
+      const first = portfolioTrack.querySelector('.shot');
+      return first ? first.getBoundingClientRect().width + portfolioGap() : portfolioViewport.clientWidth * 0.8;
+    };
+    const portfolioMax = () => portfolioTrack.scrollWidth - portfolioViewport.clientWidth - 4;
+    const portfolioGo = (direction) => {
+      const target = portfolioViewport.scrollLeft + direction * portfolioStep();
+      if (target > portfolioMax()) {
+        portfolioViewport.scrollTo({ left: 0, behavior: reduced ? 'auto' : 'smooth' });
+      } else if (target < 0) {
+        portfolioViewport.scrollTo({ left: Math.max(portfolioMax(), 0), behavior: reduced ? 'auto' : 'smooth' });
+      } else {
+        portfolioViewport.scrollBy({ left: direction * portfolioStep(), behavior: reduced ? 'auto' : 'smooth' });
+      }
+    };
+    const portfolioStop = () => {
+      if (portfolioTimer) clearInterval(portfolioTimer);
+      portfolioTimer = null;
+    };
+    const portfolioStart = () => {
+      portfolioStop();
+      if (reduced || !portfolioVisible || portfolioTrack.scrollWidth <= portfolioViewport.clientWidth + 4) return;
+      portfolioTimer = setInterval(() => {
+        if (!document.hidden && !portfolioPaused) portfolioGo(1);
+      }, 5000);
+    };
+    if (portfolioPrev) portfolioPrev.addEventListener('click', () => { portfolioGo(-1); portfolioStart(); });
+    if (portfolioNext) portfolioNext.addEventListener('click', () => { portfolioGo(1); portfolioStart(); });
+    portfolioViewport.addEventListener('pointerenter', () => { portfolioPaused = true; portfolioStop(); });
+    portfolioViewport.addEventListener('pointerleave', () => { portfolioPaused = false; portfolioStart(); });
+    portfolioViewport.addEventListener('focusin', () => { portfolioPaused = true; portfolioStop(); });
+    portfolioViewport.addEventListener('focusout', () => { portfolioPaused = false; portfolioStart(); });
+    portfolioViewport.addEventListener('touchstart', () => {
+      portfolioPaused = true;
+      portfolioStop();
+      if (portfolioResume) clearTimeout(portfolioResume);
+    }, { passive: true });
+    portfolioViewport.addEventListener('touchend', () => {
+      if (portfolioResume) clearTimeout(portfolioResume);
+      portfolioResume = setTimeout(() => { portfolioPaused = false; portfolioStart(); }, 8000);
+    });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) portfolioStop(); else portfolioStart(); });
+    window.addEventListener('resize', portfolioStart);
+    if ('IntersectionObserver' in window) {
+      const portfolioObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          portfolioVisible = entry.isIntersecting;
+          portfolioStart();
+        });
+      }, { threshold: 0.2 });
+      portfolioObserver.observe(portfolioViewport);
+    } else {
+      portfolioVisible = true;
+      portfolioStart();
+    }
+  }
+
   // Parallax sutil no hero (desktop apenas)
   const hero = document.querySelector('.hero-visual');
   if (hero && !reduced && window.matchMedia('(pointer: fine)').matches) {

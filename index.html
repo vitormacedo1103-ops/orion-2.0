@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=4" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=5" />
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
   <link rel="alternate icon" type="image/png" href="assets/img/logo.png" />
   <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript></head>
@@ -258,7 +258,10 @@
           <h2 id="port-t">VEJA O NÍVEL DE ACABAMENTO.</h2>
           <p class="sub">Alguns exemplos de conceitos e projetos demonstrativos desenvolvidos pela Orionnex.</p>
         </div>
-        <div class="portfolio" id="portfolioTrack">
+        <div class="portfolio-shell reveal">
+          <button class="portfolio-arrow portfolio-prev" type="button" aria-label="Ver demonstração anterior" aria-controls="portfolioTrack"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+          <div class="portfolio-viewport" tabindex="0" role="region" aria-roledescription="carrossel" aria-label="Demonstrações Orionnex">
+            <div class="portfolio" id="portfolioTrack">
           <article class="shot glass reveal">
             <a href="demos/clinica-essenza/index.html" class="shot-link" aria-label="Abrir demonstração Clínica Essenza">
               <div class="shot-screen shot-photo"><img src="demos/clinica-essenza/image/hero.jpeg" alt="Demonstração Clínica Essenza — site claro premium" loading="lazy" /><span>Clínica Essenza</span><small>agende sua avaliação • ver demo</small><em></em></div>
@@ -283,6 +286,9 @@
             </a>
             <div class="shot-meta"><span class="tag">Projeto demonstrativo • ao vivo</span><h3>Profissional</h3><p>Apresentação e autoridade.</p><a class="shot-cta" href="demos/marina-costa/index.html">VER DEMONSTRAÇÃO →</a></div>
           </article>
+            </div>
+          </div>
+          <button class="portfolio-arrow portfolio-next" type="button" aria-label="Ver próxima demonstração" aria-controls="portfolioTrack"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
         </div>
         <div class="center reveal">
           <a class="btn btn-primary btn-lg" target="_blank" rel="noopener" href="https://wa.me/5581999424359?text=Ol%C3%A1%20Vitor!%20Vi%20os%20exemplos%20e%20quero%20um%20projeto%20assim.">QUERO UM PROJETO ASSIM</a>
@@ -319,7 +325,6 @@
             <li>✓ Configuração do projeto</li>
             <li>✓ Ajustes finais</li>
           </ul>
-          <p class="invest-note">Os custos de plataforma, domínio ou serviços de terceiros, quando necessários, são contratados separadamente conforme o projeto.</p>
           <!-- CHECKOUT DIRETO: trocar href="#" pelo link AmploPay quando pronto -->
           <div class="invest-checkout"><a id="checkout-link" class="btn btn-pix btn-lg" href="#" data-checkout="amplo-pay">QUERO MEU SITE</a></div>
         </div>
@@ -461,6 +466,6 @@
   </a>
 
   <script src="assets/js/tracking.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/main.js?v=2" defer></script>
 </body>
 </html>
