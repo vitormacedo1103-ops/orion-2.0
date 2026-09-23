@@ -1,18 +1,4 @@
 /* Orionnex — Design System (tokens CSS-first, Tailwind v4 style) */
-/* Fundo Animated Gradient (página toda): blobs de gradiente à deriva,
-   só transform/opacity por performance. Respeita reduced-motion. */
-.page-bg{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none}
-main, footer{position:relative; z-index:1}
-.pg{position:absolute; border-radius:50%; filter:blur(110px); will-change:transform}
-.pg-a{width:60vmax; height:60vmax; left:-18vmax; top:-20vmax; background:radial-gradient(circle,rgba(46,107,255,.28),transparent 65%); animation:drift-a 22s ease-in-out infinite alternate}
-.pg-b{width:55vmax; height:55vmax; right:-16vmax; top:22vh; background:radial-gradient(circle,rgba(34,211,238,.20),transparent 65%); animation:drift-b 26s ease-in-out infinite alternate}
-.pg-c{width:58vmax; height:58vmax; left:8vw; bottom:-24vmax; background:radial-gradient(circle,rgba(139,92,246,.24),transparent 65%); animation:drift-c 30s ease-in-out infinite alternate}
-@keyframes drift-a{from{transform:translate(0,0) scale(1)}to{transform:translate(9vw,7vh) scale(1.15)}}
-@keyframes drift-b{from{transform:translate(0,0) scale(1.1)}to{transform:translate(-8vw,9vh) scale(.95)}}
-@keyframes drift-c{from{transform:translate(0,0) scale(.95)}to{transform:translate(7vw,-8vh) scale(1.12)}}
-@media (prefers-reduced-motion:reduce){
-  .pg{animation:none}
-}
 :root{
   --bg-0:#030511;
   --bg-1:#050816;
@@ -318,7 +304,9 @@ p{color:#CBD5E1; max-width:70ch}
 @media(max-width:759px){
   .header-cta{display:none}
   .nav-toggle{display:flex}
-  .nav-menu{position:fixed; inset:68px 0 auto 0; background:rgba(5,8,22,.98); border-bottom:1px solid rgba(255,255,255,.1); padding:1.2rem 1.25rem 1.6rem; display:none; flex-direction:column; align-items:stretch; gap:.2rem}
+  .nav-menu{position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.95); width:min(86vw,340px); background:rgba(10,15,36,.98); border:1px solid rgba(34,211,238,.25); border-radius:20px; padding:1.4rem 1.4rem 1.6rem; display:none; flex-direction:column; align-items:stretch; gap:.2rem; box-shadow:0 24px 80px rgba(0,0,0,.6),0 0 0 100vmax rgba(2,4,12,.72); z-index:60; opacity:0; transition:opacity .25s ease,transform .25s ease}
+  .nav-menu.open{display:flex; opacity:1; transform:translate(-50%,-50%) scale(1)}
+  .nav-menu .nav-cta{display:none}
   .nav-menu.open{display:flex}
   .nav-menu a:not(.btn){padding:.85rem .4rem; font-size:1.05rem; border-bottom:1px solid rgba(255,255,255,.06)}
   .nav-menu .btn{margin-top:1rem; min-height:52px}
