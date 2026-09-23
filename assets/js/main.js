@@ -166,7 +166,7 @@ const CHECKOUT_URL = "#";
       if (reduced || !portfolioVisible || portfolioTrack.scrollWidth <= portfolioViewport.clientWidth + 4) return;
       portfolioTimer = setInterval(() => {
         if (!document.hidden && !portfolioPaused) portfolioGo(1);
-      }, 3200);
+      }, 3000);
     };
     if (portfolioPrev) portfolioPrev.addEventListener('click', () => { portfolioGo(-1); portfolioRequestUpdate(); portfolioStart(); });
     if (portfolioNext) portfolioNext.addEventListener('click', () => { portfolioGo(1); portfolioRequestUpdate(); portfolioStart(); });
