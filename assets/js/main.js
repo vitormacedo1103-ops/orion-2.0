@@ -1,13 +1,8 @@
 // Orionnex — interações (sem dependências, performático)
 // WhatsApp oficial: https://wa.me/5581999424359
-// CHECKOUT AMPLOPAY — PONTO ÚNICO: troque o "#" pela URL definitiva e todos os CTAs verdes passam a usá-la.
-const CHECKOUT_URL = "#";
+// CTAs comerciais apontam para checkout/ (página própria, sem segredos no frontend).
 
 (function () {
-  // Aplica o link único de checkout em todos os CTAs de contratação
-  try {
-    document.querySelectorAll('a[data-checkout="amplo-pay"]').forEach((a) => { a.href = CHECKOUT_URL; });
-  } catch (err) { /* sem checkout: mantém placeholder */ }
 
   const cards = document.querySelectorAll('[data-tilt-card]');
   cards.forEach((card) => {

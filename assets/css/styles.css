@@ -55,6 +55,8 @@ p{color:#CBD5E1; max-width:70ch}
 .btn-ghost{background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14); color:#fff}
 .btn-ghost:hover{background:rgba(255,255,255,.1)}
 .btn-lg{padding:.95rem 1.8rem; font-size:.95rem}
+.btn[disabled]{opacity:.55; cursor:not-allowed}
+.btn[disabled]:hover{transform:none}
 .btn-sm{padding:.6rem 1.1rem; font-size:.8rem}
 .btn-glow{box-shadow:0 0 0 1px rgba(34,211,238,.4),0 0 44px rgba(46,107,255,.55)}
 .btn-whats{background:#25D366; color:#052e16; box-shadow:0 8px 30px rgba(37,211,102,.4); padding:.85rem 1.6rem; font-size:.9rem; -webkit-appearance:none; appearance:none; white-space:nowrap; max-width:100%}
@@ -99,6 +101,8 @@ p{color:#CBD5E1; max-width:70ch}
 .lead{font-size:1.15rem; color:#CBD5E1}
 .hero-actions{display:flex; flex-wrap:wrap; gap:.9rem; margin:1.6rem 0 .9rem}
 .hero-micro{font-size:.88rem; color:var(--muted)}
+.hero-price{margin:1rem 0 0; font-size:.92rem; letter-spacing:.06em; color:var(--muted)}
+.hero-price strong{color:#fff; font-family:var(--font-display)}
 .hero-strip{display:flex; flex-wrap:wrap; gap:.8rem; justify-content:center; margin-top:2.5rem; padding:.9rem 1.2rem; border:1px solid rgba(255,255,255,.1); border-radius:999px; background:rgba(255,255,255,.03); font-size:.85rem; color:#CBD5E1; position:relative}
 
 /* Devices — CSS mockups */
@@ -203,6 +207,7 @@ p{color:#CBD5E1; max-width:70ch}
 .shot-photo span,.shot-photo small,.shot-photo em{position:relative; z-index:1; text-shadow:0 2px 12px rgba(0,0,0,.6)}
 .shot-photo::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 20%,rgba(3,5,17,.75))}
 .shot-cta{display:inline-block; margin-top:.8rem; color:var(--cyan); font-weight:700; font-size:.88rem; text-decoration:none; font-family:var(--font-display)}
+.portfolio-note{font-size:.85rem; color:var(--muted); margin:.9rem 0 0}
 .food{background:linear-gradient(135deg,#3B0A2A,#8B2D5B 55%,#FF7A59)}
 .service{background:linear-gradient(135deg,#0B2B4D,#2E6BFF 65%,#8B5CF6)}
 .pro{background:linear-gradient(135deg,#101A3A,#3B3B8F 60%,#22D3EE)}
@@ -236,6 +241,7 @@ p{color:#CBD5E1; max-width:70ch}
 .invest-note{font-size:.85rem; color:var(--muted); max-width:38rem; margin:0 auto 1.6rem}
 .invest-micro{font-size:.88rem; color:var(--muted); margin-top:.9rem; margin-bottom:1.1rem}
 .invest-checkout{display:flex; justify-content:center; -webkit-justify-content:center; margin-top:1rem}
+.trust-micro{font-size:.82rem; color:var(--muted); margin:.7rem auto 0; max-width:30rem}
 .btn-pix{background:linear-gradient(135deg,#00A896,#02C39A 60%,#00E676); color:#03211a; box-shadow:0 8px 32px rgba(2,195,154,.45); border:1px solid rgba(255,255,255,.25)}
 .btn-pix:hover{transform:translateY(-2px); box-shadow:0 12px 44px rgba(2,195,154,.6)}
 
