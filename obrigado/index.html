@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obrigado | Orionnex</title>
+  <meta name="description" content="Confirmação de contratação Orionnex." />
+  <meta name="theme-color" content="#050816" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
+</head>
+<body>
+  <a class="skip-link" href="#obrigado-titulo">Pular para o conteúdo</a>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="../" class="logo" aria-label="Orionnex — voltar ao início">
+        <img src="../assets/img/logo.png" alt="Orionnex — Agência de Inteligência Artificial" class="logo-img" width="170" height="48" />
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container narrow">
+        <div class="invest glass" style="text-align:center; padding:3rem 1.6rem">
+          <p class="eyebrow center-eyebrow">ORIONNEX</p>
+          <h1 id="obrigado-titulo">Verificando seu pagamento...</h1>
+          <p id="obrigado-texto">Aguarde enquanto confirmamos sua contratação.</p>
+          <div id="obrigado-acao" style="margin-top:1.6rem"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+  (function () {
+    "use strict";
+    var titulo = document.getElementById("obrigado-titulo");
+    var texto = document.getElementById("obrigado-texto");
+    var acao = document.getElementById("obrigado-acao");
+    function botao(href, label, cls) {
+      var a = document.createElement("a");
+      a.href = href;
+      a.textContent = label;
+      a.className = "btn " + (cls || "btn-pix") + " btn-lg";
+      acao.appendChild(a);
+    }
+    function whatsappBtn(label) {
+      var a = document.createElement("a");
+      a.href = "https://wa.me/5581999424359?text=" + encodeURIComponent("Olá Vitor! Acabei de contratar meu site.");
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = label;
+      a.className = "btn btn-ghost btn-lg";
+      acao.appendChild(a);
+    }
+    var params = new URLSearchParams(window.location.search);
+    var orderId = params.get("order") || "";
+    try {
+      var saved = sessionStorage.getItem("orionnex_order") || "";
+      if (saved && saved !== orderId) orderId = "";
+    } catch (e) { orderId = ""; }
+    if (!/^[A-Za-z0-9-]{4,64}$/.test(orderId)) {
+      titulo.textContent = "Nenhuma contratação encontrada.";
+      texto.textContent = "Acesse pelo checkout para contratar seu site profissional.";
+      botao("../checkout/", "IR PARA O CHECKOUT");
+      return;
+    }
+    fetch("/api/order-status?id=" + encodeURIComponent(orderId), { credentials: "same-origin" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.status === "approved") {
+          titulo.textContent = "Pagamento confirmado.";
+          texto.textContent = "Obrigado por contratar a Orionnex. Agora vamos entrar em contato para coletar as informações necessárias para iniciar o desenvolvimento do seu site.";
+          whatsappBtn("FALAR COM A ORIONNEX NO WHATSAPP");
+        } else if (data.status === "pending") {
+          titulo.textContent = "Pagamento em análise.";
+          texto.textContent = "Seu Pix ainda não foi identificado. Conclua o pagamento e aguarde a confirmação automática.";
+          botao("../checkout/", "VOLTAR AO CHECKOUT", "btn-ghost");
+        } else {
+          titulo.textContent = "Pagamento não aprovado.";
+          texto.textContent = "Tente novamente pelo checkout ou fale conosco no WhatsApp.";
+          whatsappBtn("FALAR NO WHATSAPP");
+        }
+      })
+      .catch(function () {
+        titulo.textContent = "Não foi possível verificar agora.";
+        texto.textContent = "Tente novamente em instantes ou fale conosco no WhatsApp.";
+        whatsappBtn("FALAR NO WHATSAPP");
+      });
+  })();
+  </script>
+</body>
+</html>
