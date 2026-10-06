@@ -12,6 +12,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/styles.css" />
   <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
+  <style>
+    .success-icon{width:76px; height:76px; margin:0 auto 1.2rem; border-radius:50%; display:grid; place-items:center; background:linear-gradient(135deg,#00A896,#02C39A 60%,#00E676); box-shadow:0 0 44px rgba(2,195,154,.5)}
+    .obrigado-sub{font-family:var(--font-display); font-size:1.05rem; color:#fff; margin:.4rem 0 0}
+    .next-steps{list-style:none; padding:0; margin:1.8rem auto 0; display:grid; gap:.7rem; max-width:26rem; text-align:left}
+    .next-steps li{display:flex; gap:.9rem; align-items:flex-start; background:rgba(255,255,255,.04); border:1px solid var(--card-border); border-radius:.9rem; padding:.9rem 1.1rem}
+    .next-steps .step-num{font-family:var(--font-display); font-weight:800; font-size:.8rem; letter-spacing:.1em; color:var(--muted); flex:0 0 auto; padding-top:.15rem}
+    .next-steps strong{display:block; color:#fff; font-size:.95rem}
+    .next-steps small{color:var(--muted); font-size:.82rem}
+    .next-steps li.done{opacity:.75}
+    .next-steps li.done .step-num{color:#2ee673}
+    .next-steps li.current{border-color:rgba(34,211,238,.55); box-shadow:0 0 28px rgba(34,211,238,.22); background:rgba(34,211,238,.07)}
+    .next-steps li.current .step-num{color:var(--cyan)}
+    .obrigado-actions{display:flex; flex-direction:column; gap:.8rem; align-items:center; margin-top:1.8rem}
+    .obrigado-note{font-size:.82rem; color:var(--muted); margin-top:1rem}
+    @media(min-width:760px){
+      .next-steps{grid-template-columns:1fr 1fr}
+    }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#obrigado-titulo">Pular para o conteúdo</a>
@@ -59,6 +77,64 @@
       a.className = "btn btn-ghost btn-lg";
       acao.appendChild(a);
     }
+    function successIcon() {
+      var wrap = document.createElement("div");
+      wrap.className = "success-icon";
+      wrap.setAttribute("aria-hidden", "true");
+      var svgNS = "http://www.w3.org/2000/svg";
+      var svg = document.createElementNS(svgNS, "svg");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.setAttribute("width", "38");
+      svg.setAttribute("height", "38");
+      var path = document.createElementNS(svgNS, "path");
+      path.setAttribute("d", "M5 12.5l4.5 4.5L19 7.5");
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "#03211a");
+      path.setAttribute("stroke-width", "3");
+      path.setAttribute("stroke-linecap", "round");
+      path.setAttribute("stroke-linejoin", "round");
+      svg.appendChild(path);
+      wrap.appendChild(svg);
+      return wrap;
+    }
+    function nextSteps() {
+      var steps = [
+        { n: "01", t: "Pagamento confirmado", d: "Contratação concluída com sucesso.", cls: "done" },
+        { n: "02", t: "Coleta das informações", d: "Próximo passo: envie os detalhes do seu projeto.", cls: "current" },
+        { n: "03", t: "Criação do site", d: "Design personalizado e responsivo.", cls: "" },
+        { n: "04", t: "Revisão e publicação", d: "Ajustes finais e publicação.", cls: "" },
+      ];
+      var ol = document.createElement("ol");
+      ol.className = "next-steps";
+      steps.forEach(function (s) {
+        var li = document.createElement("li");
+        if (s.cls) li.className = s.cls;
+        var num = document.createElement("span");
+        num.className = "step-num";
+        num.textContent = s.n;
+        var body = document.createElement("div");
+        var t = document.createElement("strong");
+        t.textContent = s.t;
+        var d = document.createElement("small");
+        d.textContent = s.d;
+        body.appendChild(t);
+        body.appendChild(d);
+        li.appendChild(num);
+        li.appendChild(body);
+        ol.appendChild(li);
+      });
+      return ol;
+    }
+    function primaryCta() {
+      var a = document.createElement("a");
+      a.href = "#";
+      a.textContent = "ENVIAR INFORMAÇÕES DO PROJETO";
+      a.className = "btn btn-pix btn-lg";
+      var actions = document.createElement("div");
+      actions.className = "obrigado-actions";
+      actions.appendChild(a);
+      return actions;
+    }
     var params = new URLSearchParams(window.location.search);
     var orderId = params.get("order") || "";
     try {
@@ -75,9 +151,20 @@
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data.status === "approved") {
-          titulo.textContent = "Pagamento confirmado.";
-          texto.textContent = "Obrigado por contratar a Orionnex. Agora vamos entrar em contato para coletar as informações necessárias para iniciar o desenvolvimento do seu site.";
+          titulo.parentNode.insertBefore(successIcon(), titulo);
+          titulo.textContent = "Pagamento confirmado!";
+          var sub = document.createElement("p");
+          sub.className = "obrigado-sub";
+          sub.textContent = "Seu projeto com a Orionnex foi contratado com sucesso.";
+          texto.textContent = "Agora vamos reunir as informações necessárias para criar um site sob medida para o seu negócio. Em breve você poderá enviar todos os detalhes do seu projeto.";
+          texto.parentNode.insertBefore(sub, texto);
+          acao.appendChild(nextSteps());
+          acao.appendChild(primaryCta());
           whatsappBtn("FALAR COM A ORIONNEX NO WHATSAPP");
+          var note = document.createElement("p");
+          note.className = "obrigado-note";
+          note.textContent = "Você não precisa enviar nada agora pelo WhatsApp se preferir aguardar a coleta estruturada das informações.";
+          acao.appendChild(note);
         } else if (data.status === "pending") {
           titulo.textContent = "Pagamento em análise.";
           texto.textContent = "Seu Pix ainda não foi identificado. Conclua o pagamento e aguarde a confirmação automática.";
