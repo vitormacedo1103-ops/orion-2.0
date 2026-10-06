@@ -4,8 +4,8 @@
   "private": true,
   "description": "Checkout Orionnex — frontend estático + backend serverless (Vercel) com Mercado Pago Orders API",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "test": "npm run build && node --test dist/tests/validation.test.js dist/tests/signature.test.js dist/tests/orders.test.js dist/tests/http.test.js",
+    "compile": "tsc -p tsconfig.json",
+    "test": "npm run compile && node --test dist/tests/validation.test.js dist/tests/signature.test.js dist/tests/orders.test.js dist/tests/http.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {

@@ -85,6 +85,12 @@ npm i -g vercel   # ou via painel: Import Git Repository
 vercel --prod     # configure as envs de PRODUÇÃO antes
 ```
 
+Config do projeto na Vercel (importante): Framework Preset = **Other**,
+Build Command com override **vazio** (o repo não tem script `build` de propósito:
+a Vercel compila `api/*.ts` sozinha e serve o estático da raiz; qualquer
+build que não gere saída faz ela exigir uma pasta `public` inexistente),
+Output Directory **vazio** (raiz). Não criar pasta `public`.
+
 GitHub Pages continua servindo o estático, mas **sem `/api`** (checkout mostra erro seguro + WhatsApp). Produção real = Vercel + domínio.
 
 ## 9. Troca para produção
