@@ -6,6 +6,7 @@ h1,h2,h3{font-family:var(--serif);line-height:1.12;text-wrap:balance}h1{font-siz
 .demo-bar{margin:0;background:#2A1A12;color:#E8D5B5;text-align:center;font-size:.8rem;padding:.55rem 1rem}
 .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-weight:700;border-radius:999px;min-height:48px;transition:.2s;border:1px solid transparent}
 .btn-fire{background:linear-gradient(135deg,#C0392B,#8E2A20);color:#fff;box-shadow:0 8px 30px rgba(192,57,43,.4)}.btn-fire:hover{transform:translateY(-2px)}
+.btn-wa{background:#25D366;color:#06320f;box-shadow:0 8px 30px rgba(37,211,102,.45)}.btn-wa:hover{transform:translateY(-2px);background:#2ee673}
 .btn-ghost{border-color:rgba(255,255,255,.25);color:#fff}.btn-lg{padding:.95rem 1.9rem;font-size:.92rem}
 .header{position:sticky;top:0;z-index:40;background:rgba(14,11,9,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .header-in{display:flex;align-items:center;justify-content:space-between;min-height:70px;gap:1rem}
