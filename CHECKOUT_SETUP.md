@@ -93,6 +93,43 @@ Output Directory **vazio** (raiz). Não criar pasta `public`.
 
 GitHub Pages continua servindo o estático, mas **sem `/api`** (checkout mostra erro seguro + WhatsApp). Produção real = Vercel + domínio.
 
+## 8.1 Preview isolado (validar antes da produção)
+
+Crie um deploy Preview (branch/PR separado ou `vercel` sem `--prod`) e configure
+**somente neste ambiente** (Vercel → projeto → Settings → Environment Variables,
+marcando apenas **Preview**):
+
+| Variável | Finalidade | Origem do valor (sem colar aqui) |
+|---|---|---|
+| `MP_ENV` | Deve ser `test` (outro valor = recusa tudo) | literal `test` |
+| `MERCADOPAGO_ACCESS_TOKEN` | Chamadas backend à Orders API | Painel MP → app → Testes → Credenciais de teste |
+| `MERCADOPAGO_PUBLIC_KEY` | Card Brick no navegador (pública) | Mesma tela acima (`TEST-...`) |
+| `MERCADOPAGO_WEBHOOK_SECRET` | Valida `x-signature` | App → Webhooks → revelar chave **do ambiente de teste** |
+| `PUBLIC_SITE_URL` | Valida Origin/Referer (exata, sem `/` final) | URL HTTPS real do deploy Preview |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | Idempotência persistente (recomendado) | Upstash (pode ser o mesmo projeto Redis; chaves são UUID) |
+
+Como confirmar que a credencial é de teste (sem revelar valor): no painel MP,
+a tela **Testes → Credenciais de teste** mostra o par usado; a Public Key começa
+com `TEST-`. Nunca presuma pelo prefixo do token: confirme que ele foi copiado
+da tela de teste, nunca da de produção. Nunca copie nada de Production para o Preview.
+
+Roteiro de validação (sem cobrança real):
+1. Abra `/checkout/` no Preview e confira no DevTools (Network) que
+   `/checkout/checkout.js` carrega com `200` e `content-type: javascript`.
+2. Preencha dados de teste e gere Pix: com `payer.first_name: "APRO"` a Order
+   de teste retorna `action_required` e aprova sozinha; acompanhe o QR.
+3. Consulte `GET /api/order-status?id={id}` direto no navegador (esperado:
+   `{"orderId":...,"status":"approved"}` após aprovação).
+4. Webhook: use a simulação do painel MP com uma Order **real de teste**
+   (ID fictício como `123456` retorna `200 processed:false` + log
+   `webhook_unknown_order` — comportamento correto, não defeito).
+5. Idempotência: repita a mesma notificação → 2ª retorna 200 sem reprocessar
+   (log `webhook_duplicate`); clique duplo em Pagar → `409 duplicate_request`.
+6. Falhas: sem `x-signature` → `401`; JSON inválido → `400`; preço alterado
+   no DevTools → extrato de teste mostra R$647,90.
+7. Produção segue isolada: este Preview usa envs próprias; nada aqui toca
+   `https://www.orionnexofficial.com` nem credenciais de produção.
+
 ## 9. Troca para produção
 
 1. Credenciais **de produção** no painel MP (chaves sem prefixo `TEST-`/`APP_USR`-teste).

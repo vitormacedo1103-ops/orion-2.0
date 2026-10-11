@@ -6,7 +6,7 @@ import { isCpf, isEmail, isName, isPaymentMethod, isPhoneBr, isUuidV4 } from "./
 import { rateLimit } from "./_lib/ratelimit";
 import { logEvent } from "./_lib/logger";
 import { cacheStatus, getStore } from "./_lib/store";
-import { createCardOrder, createPixOrder } from "./_lib/mp";
+import { createCardOrder, createPixOrder, mpStatusOf, classifyMpError } from "./_lib/mp.js";
 import { mapMpStatus } from "./_lib/constants";
 
 interface CreateOrderBody {
@@ -134,7 +134,15 @@ const handler: Handler = async (req, res) => {
     logEvent("order_created", { method: "card", orderId: order.orderId, email, cpf: b.cpf, status });
     res.status(201).json({ orderId: order.orderId, status });
   } catch (err) {
-    logEvent("order_failed", { method: b.method, email });
+    const httpStatus = mpStatusOf(err);
+    const kind = httpStatus !== null ? classifyMpError(httpStatus) : "upstream";
+    if (kind === "invalid") {
+      logEvent("order_rejected", { method: b.method, email });
+      res.status(400).json({ error: "payment_invalid" });
+      return;
+    }
+    if (kind === "config") logEvent("order_config_error", { method: b.method });
+    else logEvent("order_failed", { method: b.method, email });
     serverError(res);
   }
 };

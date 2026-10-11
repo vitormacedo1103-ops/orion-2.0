@@ -35,11 +35,15 @@ export function clientIp(req: VercelRequest): string {
   return (real || "unknown").slice(0, 64);
 }
 
-// Origem permitida: mesma origem do site (sem wildcard). Usado nos POSTs.
+// Origem permitida: exatamente a origem oficial (Origin não tem path).
+// startsWith sozinho aceitaria "https://site.com.evil.com" (evidência: sufixo
+// de domínio). Referer (com path) exige prefixo + "/".
 export function sameOrigin(req: VercelRequest, siteUrl: string): boolean {
   if (!siteUrl) return false;
-  const origin = header(req, "origin") || header(req, "referer") || "";
-  return origin.startsWith(siteUrl);
+  const origin = header(req, "origin");
+  if (origin) return origin === siteUrl;
+  const referer = header(req, "referer") || "";
+  return referer === siteUrl || referer.startsWith(`${siteUrl}/`);
 }
 
 export function badRequest(res: VercelResponse, code: string): void {

@@ -147,6 +147,25 @@ export interface MpOrderStatus {
   externalReference: string;
 }
 
+// Classifica falha HTTP do Mercado Pago sem vazar detalhes ao cliente:
+// "invalid" = dados recusados (400/422) → 400 seguro; "config" = 401/403
+// (credencial do SERVIDOR inválida) → 500 genérico; resto = upstream.
+export type MpFailure = "invalid" | "config" | "upstream";
+
+export function mpStatusOf(err: unknown): number | null {
+  if (err instanceof Error) {
+    const m = /:(\d{3})$/.exec(err.message);
+    if (m) return Number(m[1]);
+  }
+  return null;
+}
+
+export function classifyMpError(status: number): MpFailure {
+  if (status === 400 || status === 422) return "invalid";
+  if (status === 401 || status === 403) return "config";
+  return "upstream";
+}
+
 export async function getOrderStatus(accessToken: string, orderId: string): Promise<MpOrderStatus> {
   const res = await mpFetch(`/v1/orders/${encodeURIComponent(orderId)}`, accessToken, { method: "GET" });
   if (res.status === 404) throw new Error("mp_order_not_found");

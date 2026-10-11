@@ -73,8 +73,27 @@
     if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
   }
 
+  // fetch com timeout: sem isso, uma requisição travada deixaria o botão
+  // desabilitado e o usuário preso em "Gerando Pix..." sem feedback.
+  function fetchJson(url, opts, timeoutMs) {
+    var ctrl = null;
+    var timer = null;
+    try {
+      if (window.AbortController) {
+        ctrl = new AbortController();
+        timer = setTimeout(function () { ctrl.abort(); }, timeoutMs || 20000);
+      }
+    } catch (e) {}
+    var options = {};
+    for (var k in opts) options[k] = opts[k];
+    if (ctrl) options.signal = ctrl.signal;
+    return fetch(url, options).finally(function () {
+      if (timer) clearTimeout(timer);
+    });
+  }
+
   function checkStatus(orderId, done) {
-    fetch(API + "/api/order-status?id=" + encodeURIComponent(orderId), { credentials: "same-origin" })
+    fetchJson(API + "/api/order-status?id=" + encodeURIComponent(orderId), { credentials: "same-origin" })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         if (data.status === "approved") {
@@ -133,7 +152,7 @@
     var btn = document.getElementById("btn-pix");
     btn.disabled = true;
     setStatus("Gerando Pix...", "processing");
-    fetch(API + "/api/create-order", {
+    fetchJson(API + "/api/create-order", {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json", "X-Idempotency-Key": idempotencyKey },
@@ -185,7 +204,7 @@
     if (brickLoaded) return;
     brickLoaded = true;
     setStatus("Carregando pagamento com cartão...", "processing");
-    fetch(API + "/api/config", { credentials: "same-origin" })
+    fetchJson(API + "/api/config", { credentials: "same-origin" })
       .then(function (r) {
         if (!r.ok) throw new Error("config");
         return r.json();
@@ -220,7 +239,7 @@
             var customer = customerData();
             if (!customer) return Promise.reject();
             setStatus("Processando pagamento...", "processing");
-            return fetch(API + "/api/create-order", {
+            return fetchJson(API + "/api/create-order", {
               method: "POST",
               credentials: "same-origin",
               headers: { "Content-Type": "application/json", "X-Idempotency-Key": idempotencyKey },

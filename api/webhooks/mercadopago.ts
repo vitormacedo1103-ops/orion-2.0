@@ -66,7 +66,15 @@ const handler: Handler = async (req, res) => {
     await store.add(eventKey, 7 * 24 * 3600);
     logEvent("webhook_processed", { dataId, status });
     res.status(200).json({ received: true });
-  } catch {
+  } catch (err) {
+    // Order inexistente (ex: ID fictício "123456" da simulação): não há nada
+    // para confirmar — ack 200 para encerrar retries, sem aprovar nada.
+    // Falha de rede/provedor: 502 para o MP tentar de novo.
+    if (err instanceof Error && err.message === "mp_order_not_found") {
+      logEvent("webhook_unknown_order", { dataId });
+      res.status(200).json({ received: true, processed: false });
+      return;
+    }
     logEvent("webhook_failed", { dataId });
     res.status(502).json({ error: "verification_failed" });
   }
