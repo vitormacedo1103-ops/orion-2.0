@@ -2,6 +2,7 @@ import { describe, it, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { signManifest, buildManifest } from "../api/_lib/signature.js";
 import { sameOrigin } from "../api/_lib/http.js";
 import { classifyMpError, mpStatusOf } from "../api/_lib/mp.js";
 import createOrder from "../api/create-order.js";
@@ -79,6 +80,53 @@ describe("webhook sem assinatura válida => 401 (sem rede)", () => {
     const { res, calls } = mockRes();
     await webhook(mockReq("POST", {}, { "data.id": "ORD123" }), res);
     assert.equal(calls[0].code, 401);
+  });
+});
+
+describe("webhook com Order inexistente e falha de auth (fetch mockado)", () => {
+  const SECRET = "dummy-secret";
+  function signedReq() {
+    const ts = "1704908010";
+    const dataId = "ORD123456";
+    const xRequestId = "req-9";
+    const v1 = signManifest(buildManifest(dataId, xRequestId, ts), SECRET);
+    return mockReq(
+      "POST",
+      { "x-signature": `ts=${ts},v1=${v1}`, "x-request-id": xRequestId },
+      { "data.id": dataId }
+    );
+  }
+  function stubFetch(status: number) {
+    const orig = globalThis.fetch;
+    globalThis.fetch = async () =>
+      new Response("{}", { status, headers: { "Content-Type": "application/json" } });
+    return () => {
+      globalThis.fetch = orig;
+    };
+  }
+  it("Order inexistente (404 do MP) => 200 processed:false, sem aprovar", async () => {
+    testEnv();
+    const restore = stubFetch(404);
+    try {
+      const { res, calls } = mockRes();
+      await webhook(signedReq(), res);
+      assert.equal(calls[0].code, 200);
+      assert.deepEqual(calls[0].data, { received: true, processed: false });
+    } finally {
+      restore();
+    }
+  });
+  it("falha de auth no MP (401) => 502, sem aprovar e sem tratar como inexistente", async () => {
+    testEnv();
+    const restore = stubFetch(401);
+    try {
+      const { res, calls } = mockRes();
+      await webhook(signedReq(), res);
+      assert.equal(calls[0].code, 502);
+      assert.deepEqual(calls[0].data, { error: "verification_failed" });
+    } finally {
+      restore();
+    }
   });
 });
 

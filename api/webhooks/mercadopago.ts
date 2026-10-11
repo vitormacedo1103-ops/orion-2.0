@@ -5,7 +5,7 @@ import { verifySignature } from "../_lib/signature.js";
 import { rateLimit } from "../_lib/ratelimit.js";
 import { logEvent } from "../_lib/logger.js";
 import { cacheStatus, getStore } from "../_lib/store.js";
-import { getOrderStatus } from "../_lib/mp.js";
+import { getOrderStatus, mpStatusOf } from "../_lib/mp.js";
 
 // POST /api/webhooks/mercadopago?type=...&data.id=...
 // 1. valida assinatura (fail closed) 2. confirma estado real na Order
@@ -69,13 +69,19 @@ const handler: Handler = async (req, res) => {
   } catch (err) {
     // Order inexistente (ex: ID fictício "123456" da simulação): não há nada
     // para confirmar — ack 200 para encerrar retries, sem aprovar nada.
-    // Falha de rede/provedor: 502 para o MP tentar de novo.
+    // Qualquer outro erro: 502 para o MP tentar de novo, com etapa e status
+    // do provedor no log (sem segredos) para distinguir auth/rede/config.
     if (err instanceof Error && err.message === "mp_order_not_found") {
       logEvent("webhook_unknown_order", { dataId });
       res.status(200).json({ received: true, processed: false });
       return;
     }
-    logEvent("webhook_failed", { dataId });
+    const providerStatus = mpStatusOf(err);
+    if (providerStatus === 401 || providerStatus === 403) {
+      logEvent("webhook_auth_error", { dataId, stage: "confirm_order", providerStatus });
+    } else {
+      logEvent("webhook_failed", { dataId, stage: "confirm_order", providerStatus });
+    }
     res.status(502).json({ error: "verification_failed" });
   }
 };
