@@ -1,5 +1,12 @@
 # Checkout Orionnex — Setup e Operação
 
+> **MIGRAÇÃO YAMPI (v6):** o fluxo de compra agora usa o checkout hospedado da
+> Yampi. Os trechos abaixo sobre checkout próprio/Brick/QR Code estão
+> preservados como referência do backend legado (`api/order-status.ts`,
+> `api/webhooks/`, `obrigado/`), que continua verificando pedidos existentes.
+> Novos pedidos são criados na Yampi, não mais em `api/create-order.ts`
+> (removido).
+
 Checkout próprio com Mercado Pago **Orders API** (Checkout Transparente): Pix + cartão via Card Payment Brick, backend serverless (Vercel), webhook com validação de assinatura e idempotência.
 
 **NENHUM secret neste repo. Credenciais só em variáveis de ambiente.**

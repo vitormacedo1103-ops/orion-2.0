@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { isCpf, isEmail, isPhoneBr, isName, isUuidV4, isOrderId, isPaymentMethod, maskCpf } from "../api/_lib/validation.js";
+import { isCpf, isEmail, isPhoneBr, isName, isUuidV4, isOrderId, isPaymentMethod, isCardType, maskCpf } from "../api/_lib/validation.js";
 
 describe("validation", () => {
   it("aceita CPF válido e rejeita inválidos", () => {
@@ -31,5 +31,12 @@ describe("validation", () => {
   });
   it("mascara CPF no log", () => {
     assert.equal(maskCpf("123.456.789-09"), "123.456.***-**");
+  });
+  it("aceita só credit_card e debit_card como tipo de cartão", () => {
+    assert.equal(isCardType("credit_card"), true);
+    assert.equal(isCardType("debit_card"), true);
+    assert.equal(isCardType("gift_card"), false);
+    assert.equal(isCardType(undefined), false);
+    assert.equal(isCardType("CREDIT_CARD"), false);
   });
 });

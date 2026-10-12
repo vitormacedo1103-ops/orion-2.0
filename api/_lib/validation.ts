@@ -53,6 +53,13 @@ export function isPaymentMethod(v: unknown): v is PaymentMethod {
   return v === "pix" || v === "card";
 }
 
+// Tipos de cartão aceitos pela Orders API (allowlist explícita).
+export type CardType = "credit_card" | "debit_card";
+
+export function isCardType(v: unknown): v is CardType {
+  return v === "credit_card" || v === "debit_card";
+}
+
 // Mascara CPF para logs: 123.456.***-**
 export function maskCpf(v: string): string {
   const d = onlyDigits(v);

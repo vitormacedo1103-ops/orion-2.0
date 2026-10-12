@@ -5,10 +5,8 @@ import { join } from "node:path";
 import { signManifest, buildManifest } from "../api/_lib/signature.js";
 import { sameOrigin } from "../api/_lib/http.js";
 import { classifyMpError, mpStatusOf } from "../api/_lib/mp.js";
-import createOrder from "../api/create-order.js";
 import orderStatus from "../api/order-status.js";
 import webhook from "../api/webhooks/mercadopago.js";
-import config from "../api/config.js";
 
 function mockReq(method: string, headers: Record<string, string> = {}, query: Record<string, string> = {}, body: unknown = undefined) {
   return { method, headers, query, body } as never;
@@ -52,11 +50,6 @@ function testEnv() {
 }
 
 describe("fail closed sem configuração", () => {
-  it("create-order sem env => 503 (sem rede)", async () => {
-    const { res, calls } = mockRes();
-    await createOrder(mockReq("POST", { "content-type": "application/json" }, {}, {}), res);
-    assert.equal(calls[0].code, 503);
-  });
   it("order-status sem env => 503 (sem rede)", async () => {
     const { res, calls } = mockRes();
     await orderStatus(mockReq("GET", {}, { id: "ORD123" }), res);
@@ -65,11 +58,6 @@ describe("fail closed sem configuração", () => {
   it("webhook sem env => 503 (sem rede)", async () => {
     const { res, calls } = mockRes();
     await webhook(mockReq("POST", {}, {}), res);
-    assert.equal(calls[0].code, 503);
-  });
-  it("config sem public key => 503", async () => {
-    const { res, calls } = mockRes();
-    await config(mockReq("GET"), res);
     assert.equal(calls[0].code, 503);
   });
 });
@@ -159,11 +147,13 @@ describe("classificação de erro do Mercado Pago", () => {
   });
 });
 
-describe("referência estática do checkout", () => {
-  it("checkout/index.html aponta para /checkout/checkout.js absoluto", () => {
+describe("CTAs de compra apontam para a Yampi", () => {
+  const YAMPI = "https://loja-milionaria35.pay.yampi.com.br/pay/YFEKMXMR2G";
+  it("7 CTAs usam o link Yampi e nenhum aponta para checkout/", () => {
     const root = join(__dirname, "..", "..");
-    const html = readFileSync(join(root, "checkout", "index.html"), "utf8");
-    assert.match(html, /<script src="\/checkout\/checkout\.js"/);
-    assert.doesNotMatch(html, /<script src="checkout\.js"/);
+    const html = readFileSync(join(root, "index.html"), "utf8");
+    const hrefs = html.match(new RegExp(`href="${YAMPI.replace(/[./]/g, (c) => `\\${c}`)}"`, "g")) || [];
+    assert.equal(hrefs.length, 7);
+    assert.doesNotMatch(html, /href="checkout\//);
   });
 });

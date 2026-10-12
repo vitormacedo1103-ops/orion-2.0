@@ -20,10 +20,6 @@
     .next-steps .step-num{font-family:var(--font-display); font-weight:800; font-size:.8rem; letter-spacing:.1em; color:var(--muted); flex:0 0 auto; padding-top:.15rem}
     .next-steps strong{display:block; color:#fff; font-size:.95rem}
     .next-steps small{color:var(--muted); font-size:.82rem}
-    .next-steps li.done{opacity:.75}
-    .next-steps li.done .step-num{color:#2ee673}
-    .next-steps li.current{border-color:rgba(34,211,238,.55); box-shadow:0 0 28px rgba(34,211,238,.22); background:rgba(34,211,238,.07)}
-    .next-steps li.current .step-num{color:var(--cyan)}
     .obrigado-actions{display:flex; flex-direction:column; gap:.8rem; align-items:center; margin-top:1.8rem}
     .obrigado-note{font-size:.82rem; color:var(--muted); margin-top:1rem}
     @media(min-width:760px){
@@ -47,140 +43,25 @@
       <div class="container narrow">
         <div class="invest glass" style="text-align:center; padding:3rem 1.6rem">
           <p class="eyebrow center-eyebrow">ORIONNEX</p>
-          <h1 id="obrigado-titulo">Verificando seu pagamento...</h1>
-          <p id="obrigado-texto">Aguarde enquanto confirmamos sua contratação.</p>
-          <div id="obrigado-acao" style="margin-top:1.6rem"></div>
+          <div class="success-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#03211a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div>
+          <h1 id="obrigado-titulo">Obrigado pela sua compra!</h1>
+          <p class="obrigado-sub">Obrigado por escolher a Orionnex para criar o site da sua empresa.</p>
+          <p>Os próximos passos serão comunicados após a confirmação do seu pedido.</p>
+          <ol class="next-steps">
+            <li><span class="step-num">01</span><div><strong>Pedido recebido</strong><small>Seus dados chegam até nossa equipe.</small></div></li>
+            <li><span class="step-num">02</span><div><strong>Confirmação do pagamento</strong><small>Aguarde a validação do pagamento.</small></div></li>
+            <li><span class="step-num">03</span><div><strong>Coleta das informações</strong><small>Vamos reunir os detalhes do projeto.</small></div></li>
+            <li><span class="step-num">04</span><div><strong>Criação e publicação</strong><small>Design personalizado, revisão e publicação.</small></div></li>
+          </ol>
+          <div class="obrigado-actions">
+            <a class="btn btn-whats btn-lg" target="_blank" rel="noopener" href="https://wa.me/5581999424359?text=Ol%C3%A1%20Vitor!%20Acabei%20de%20fazer%20meu%20pedido%20no%20site.">FALAR COM A ORIONNEX NO WHATSAPP</a>
+            <a class="btn btn-ghost btn-lg" href="../">VOLTAR AO INÍCIO</a>
+          </div>
+          <p class="obrigado-note">Se tiver qualquer dúvida sobre seu pedido, chame a gente no WhatsApp.</p>
         </div>
       </div>
     </section>
   </main>
 
-  <script>
-  (function () {
-    "use strict";
-    var titulo = document.getElementById("obrigado-titulo");
-    var texto = document.getElementById("obrigado-texto");
-    var acao = document.getElementById("obrigado-acao");
-    function botao(href, label, cls) {
-      var a = document.createElement("a");
-      a.href = href;
-      a.textContent = label;
-      a.className = "btn " + (cls || "btn-pix") + " btn-lg";
-      acao.appendChild(a);
-    }
-    function whatsappBtn(label) {
-      var a = document.createElement("a");
-      a.href = "https://wa.me/5581999424359?text=" + encodeURIComponent("Olá Vitor! Acabei de contratar meu site.");
-      a.target = "_blank";
-      a.rel = "noopener";
-      a.textContent = label;
-      a.className = "btn btn-ghost btn-lg";
-      acao.appendChild(a);
-    }
-    function successIcon() {
-      var wrap = document.createElement("div");
-      wrap.className = "success-icon";
-      wrap.setAttribute("aria-hidden", "true");
-      var svgNS = "http://www.w3.org/2000/svg";
-      var svg = document.createElementNS(svgNS, "svg");
-      svg.setAttribute("viewBox", "0 0 24 24");
-      svg.setAttribute("width", "38");
-      svg.setAttribute("height", "38");
-      var path = document.createElementNS(svgNS, "path");
-      path.setAttribute("d", "M5 12.5l4.5 4.5L19 7.5");
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke", "#03211a");
-      path.setAttribute("stroke-width", "3");
-      path.setAttribute("stroke-linecap", "round");
-      path.setAttribute("stroke-linejoin", "round");
-      svg.appendChild(path);
-      wrap.appendChild(svg);
-      return wrap;
-    }
-    function nextSteps() {
-      var steps = [
-        { n: "01", t: "Pagamento confirmado", d: "Contratação concluída com sucesso.", cls: "done" },
-        { n: "02", t: "Coleta das informações", d: "Próximo passo: envie os detalhes do seu projeto.", cls: "current" },
-        { n: "03", t: "Criação do site", d: "Design personalizado e responsivo.", cls: "" },
-        { n: "04", t: "Revisão e publicação", d: "Ajustes finais e publicação.", cls: "" },
-      ];
-      var ol = document.createElement("ol");
-      ol.className = "next-steps";
-      steps.forEach(function (s) {
-        var li = document.createElement("li");
-        if (s.cls) li.className = s.cls;
-        var num = document.createElement("span");
-        num.className = "step-num";
-        num.textContent = s.n;
-        var body = document.createElement("div");
-        var t = document.createElement("strong");
-        t.textContent = s.t;
-        var d = document.createElement("small");
-        d.textContent = s.d;
-        body.appendChild(t);
-        body.appendChild(d);
-        li.appendChild(num);
-        li.appendChild(body);
-        ol.appendChild(li);
-      });
-      return ol;
-    }
-    function primaryCta() {
-      var a = document.createElement("a");
-      a.href = "#";
-      a.textContent = "ENVIAR INFORMAÇÕES DO PROJETO";
-      a.className = "btn btn-pix btn-lg";
-      var actions = document.createElement("div");
-      actions.className = "obrigado-actions";
-      actions.appendChild(a);
-      return actions;
-    }
-    var params = new URLSearchParams(window.location.search);
-    var orderId = params.get("order") || "";
-    try {
-      var saved = sessionStorage.getItem("orionnex_order") || "";
-      if (saved && saved !== orderId) orderId = "";
-    } catch (e) { orderId = ""; }
-    if (!/^[A-Za-z0-9-]{4,64}$/.test(orderId)) {
-      titulo.textContent = "Nenhuma contratação encontrada.";
-      texto.textContent = "Acesse pelo checkout para contratar seu site profissional.";
-      botao("../checkout/", "IR PARA O CHECKOUT");
-      return;
-    }
-    fetch("/api/order-status?id=" + encodeURIComponent(orderId), { credentials: "same-origin" })
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (data.status === "approved") {
-          titulo.parentNode.insertBefore(successIcon(), titulo);
-          titulo.textContent = "Pagamento confirmado!";
-          var sub = document.createElement("p");
-          sub.className = "obrigado-sub";
-          sub.textContent = "Seu projeto com a Orionnex foi contratado com sucesso.";
-          texto.textContent = "Agora vamos reunir as informações necessárias para criar um site sob medida para o seu negócio. Em breve você poderá enviar todos os detalhes do seu projeto.";
-          texto.parentNode.insertBefore(sub, texto);
-          acao.appendChild(nextSteps());
-          acao.appendChild(primaryCta());
-          whatsappBtn("FALAR COM A ORIONNEX NO WHATSAPP");
-          var note = document.createElement("p");
-          note.className = "obrigado-note";
-          note.textContent = "Você não precisa enviar nada agora pelo WhatsApp se preferir aguardar a coleta estruturada das informações.";
-          acao.appendChild(note);
-        } else if (data.status === "pending") {
-          titulo.textContent = "Pagamento em análise.";
-          texto.textContent = "Seu Pix ainda não foi identificado. Conclua o pagamento e aguarde a confirmação automática.";
-          botao("../checkout/", "VOLTAR AO CHECKOUT", "btn-ghost");
-        } else {
-          titulo.textContent = "Pagamento não aprovado.";
-          texto.textContent = "Tente novamente pelo checkout ou fale conosco no WhatsApp.";
-          whatsappBtn("FALAR NO WHATSAPP");
-        }
-      })
-      .catch(function () {
-        titulo.textContent = "Não foi possível verificar agora.";
-        texto.textContent = "Tente novamente em instantes ou fale conosco no WhatsApp.";
-        whatsappBtn("FALAR NO WHATSAPP");
-      });
-  })();
-  </script>
 </body>
 </html>

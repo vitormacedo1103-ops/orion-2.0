@@ -1,6 +1,6 @@
 // Orionnex — interações (sem dependências, performático)
 // WhatsApp oficial: https://wa.me/5581999424359
-// CTAs comerciais apontam para checkout/ (página própria, sem segredos no frontend).
+// CTAs comerciais apontam para o checkout hospedado Yampi.
 
 (function () {
 
