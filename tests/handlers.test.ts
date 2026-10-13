@@ -148,7 +148,7 @@ describe("classificação de erro do Mercado Pago", () => {
 });
 
 describe("CTAs de compra apontam para a Yampi", () => {
-  const YAMPI = "https://loja-milionaria35.pay.yampi.com.br/pay/YFEKMXMR2G";
+  const YAMPI = "https://seguro.orionnexofficial.com/pay/YFEKMXMR2G";
   it("7 CTAs usam o link Yampi e nenhum aponta para checkout/", () => {
     const root = join(__dirname, "..", "..");
     const html = readFileSync(join(root, "index.html"), "utf8");
