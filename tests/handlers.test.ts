@@ -148,6 +148,7 @@ describe("classificação de erro do Mercado Pago", () => {
 });
 
 describe("CTAs de compra apontam para a Yampi", () => {
+
   const YAMPI = "https://seguro.orionnexofficial.com/pay/YFEKMXMR2G";
   it("7 CTAs usam o link Yampi e nenhum aponta para checkout/", () => {
     const root = join(__dirname, "..", "..");
@@ -155,5 +156,18 @@ describe("CTAs de compra apontam para a Yampi", () => {
     const hrefs = html.match(new RegExp(`href="${YAMPI.replace(/[./]/g, (c) => `\\${c}`)}"`, "g")) || [];
     assert.equal(hrefs.length, 7);
     assert.doesNotMatch(html, /href="checkout\//);
+  });
+});
+
+describe("demos funcionam com trailing slash", () => {
+  it("vercel for�a barra final e demos usam paths relativos", () => {
+    const root = join(__dirname, "..", "..");
+    const vercel = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8"));
+    assert.equal(vercel.trailingSlash, true);
+    const demos = ["clinica-essenza", "casa-sabor", "vetor-servicos", "marina-costa"];
+    for (const d of demos) {
+      const html = readFileSync(join(root, "demos", d, "index.html"), "utf8");
+      assert.doesNotMatch(html, /(src|href)="\/(assets|image)\//);
+    }
   });
 });
