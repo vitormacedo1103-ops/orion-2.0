@@ -1,11 +1,28 @@
 # Checkout Orionnex — Setup e Operação
 
-> **MIGRAÇÃO YAMPI (v6):** o fluxo de compra agora usa o checkout hospedado da
-> Yampi. Os trechos abaixo sobre checkout próprio/Brick/QR Code estão
-> preservados como referência do backend legado (`api/order-status.ts`,
-> `api/webhooks/`, `obrigado/`), que continua verificando pedidos existentes.
-> Novos pedidos são criados na Yampi, não mais em `api/create-order.ts`
-> (removido).
+> **MIGRAÇÃO YAMPI (concluída no frontend):** o fluxo de compra usa o checkout
+> hospedado da Yampi (7 CTAs na página inicial). A infraestrutura do checkout
+> próprio Mercado Pago foi removida: `checkout/`, `api/create-order.ts`,
+> `api/config.ts`, `api/order-status.ts`, `api/webhooks/mercadopago.ts` e o
+> mapeamento de status MP não existem mais. Restam a infra genérica
+> (`api/_lib/`: validação, HTTP, logger, rate limit, store/Redis, tipos) e os
+> testes correspondentes. O texto abaixo fica como referência histórica do
+> backend legado; variáveis `MERCADOPAGO_*` e `MP_ENV` não são mais lidas
+> por nenhum código.
+>
+> **Limpeza fase 1:** pacote `mercadopago` desinstalado, `api/config.ts` e
+> `api/create-order.ts` removidos, `MERCADOPAGO_PUBLIC_KEY`/`PUBLIC_SITE_URL`
+> sem leitores no código, `sameOrigin` e cache local de status removidos.
+> Preservados: `ACCESS_TOKEN`, `WEBHOOK_SECRET`, `MP_ENV`, `UPSTASH_*`,
+> `order-status`, webhooks e validações.
+>
+> **Webhook Yampi:** endpoint `POST /api/webhooks/yampi` (eventos
+> `order.paid` e `order.status.updated`, status lido de
+> `resource.status.data.alias`, idempotência via `store.ts`/Upstash).
+> Cadastrar na Yampi a URL `https://www.orionnexofficial.com/api/webhooks/yampi`
+> e configurar `YAMPI_WEBHOOK_SECRET` com a chave do painel. O endpoint
+> responde 2XX em todos os casos válidos/inválidos-assinados e nunca aprova
+> sem status reconhecido como pago.
 
 Checkout próprio com Mercado Pago **Orders API** (Checkout Transparente): Pix + cartão via Card Payment Brick, backend serverless (Vercel), webhook com validação de assinatura e idempotência.
 

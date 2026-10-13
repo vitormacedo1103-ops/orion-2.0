@@ -1,5 +1,3 @@
-import type { OrderStatus } from "./constants";
-
 // Persistência do processamento de webhooks (idempotência).
 // Padrão: memória local (ok para testes; serverless pode perder estado entre
 // instâncias — em produção configure Upstash Redis via env).
@@ -55,20 +53,4 @@ export function getStore(): ProcessedStore {
   const token = process.env.UPSTASH_REDIS_REST_TOKEN || "";
   instance = url && token ? new UpstashStore(url, token) : new MemoryStore();
   return instance;
-}
-
-export interface OrderRecord {
-  status: OrderStatus;
-  updatedAt: string;
-}
-
-// Cache simples de status consultado (fonte oficial continua sendo o Mercado Pago).
-const statusCache = new Map<string, OrderRecord>();
-
-export function cacheStatus(orderId: string, status: OrderStatus): void {
-  statusCache.set(orderId, { status, updatedAt: new Date().toISOString() });
-}
-
-export function cachedStatus(orderId: string): OrderRecord | undefined {
-  return statusCache.get(orderId);
 }
